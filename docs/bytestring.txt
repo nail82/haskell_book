@@ -1,0 +1,143 @@
+Data.ByteString.Lazy.all ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> Bool
+Data.ByteString.Lazy.any ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> Bool
+append :: ByteString -> ByteString -> ByteString
+Data.ByteString.Lazy.appendFile :: FilePath -> ByteString -> IO ()
+Data.ByteString.Lazy.break ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> (ByteString, ByteString)
+Data.ByteString.Lazy.concat :: [ByteString] -> ByteString
+Data.ByteString.Lazy.concatMap ::
+  (GHC.Word.Word8 -> ByteString) -> ByteString -> ByteString
+cons :: GHC.Word.Word8 -> ByteString -> ByteString
+cons' :: GHC.Word.Word8 -> ByteString -> ByteString
+copy :: ByteString -> ByteString
+count :: GHC.Word.Word8 -> ByteString -> GHC.Int.Int64
+Data.ByteString.Lazy.cycle :: ByteString -> ByteString
+Data.ByteString.Lazy.drop ::
+  GHC.Int.Int64 -> ByteString -> ByteString
+Data.ByteString.Lazy.dropWhile ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> ByteString
+Data.ByteString.Lazy.elem :: GHC.Word.Word8 -> ByteString -> Bool
+elemIndex :: GHC.Word.Word8 -> ByteString -> Maybe GHC.Int.Int64
+elemIndexEnd :: GHC.Word.Word8 -> ByteString -> Maybe GHC.Int.Int64
+elemIndices :: GHC.Word.Word8 -> ByteString -> [GHC.Int.Int64]
+empty :: ByteString
+Data.ByteString.Lazy.filter ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> ByteString
+find ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> Maybe GHC.Word.Word8
+findIndex ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> Maybe GHC.Int.Int64
+findIndices ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> [GHC.Int.Int64]
+Data.ByteString.Lazy.foldl ::
+  (a -> GHC.Word.Word8 -> a) -> a -> ByteString -> a
+foldl' :: (a -> GHC.Word.Word8 -> a) -> a -> ByteString -> a
+Data.ByteString.Lazy.foldl1 ::
+  (GHC.Word.Word8 -> GHC.Word.Word8 -> GHC.Word.Word8)
+  -> ByteString -> GHC.Word.Word8
+foldl1' ::
+  (GHC.Word.Word8 -> GHC.Word.Word8 -> GHC.Word.Word8)
+  -> ByteString -> GHC.Word.Word8
+Data.ByteString.Lazy.foldr ::
+  (GHC.Word.Word8 -> a -> a) -> a -> ByteString -> a
+Data.ByteString.Lazy.foldr1 ::
+  (GHC.Word.Word8 -> GHC.Word.Word8 -> GHC.Word.Word8)
+  -> ByteString -> GHC.Word.Word8
+fromChunks :: [Data.ByteString.Internal.ByteString] -> ByteString
+fromStrict :: Data.ByteString.Internal.ByteString -> ByteString
+Data.ByteString.Lazy.getContents :: IO ByteString
+group :: ByteString -> [ByteString]
+groupBy ::
+  (GHC.Word.Word8 -> GHC.Word.Word8 -> Bool)
+  -> ByteString -> [ByteString]
+hGet :: GHC.IO.Handle.Types.Handle -> Int -> IO ByteString
+hGetContents :: GHC.IO.Handle.Types.Handle -> IO ByteString
+hGetNonBlocking ::
+  GHC.IO.Handle.Types.Handle -> Int -> IO ByteString
+hPut :: GHC.IO.Handle.Types.Handle -> ByteString -> IO ()
+hPutNonBlocking ::
+  GHC.IO.Handle.Types.Handle -> ByteString -> IO ByteString
+hPutStr :: GHC.IO.Handle.Types.Handle -> ByteString -> IO ()
+Data.ByteString.Lazy.head :: ByteString -> GHC.Word.Word8
+index :: ByteString -> GHC.Int.Int64 -> GHC.Word.Word8
+Data.ByteString.Lazy.init :: ByteString -> ByteString
+inits :: ByteString -> [ByteString]
+Data.ByteString.Lazy.interact ::
+  (ByteString -> ByteString) -> IO ()
+intercalate :: ByteString -> [ByteString] -> ByteString
+intersperse :: GHC.Word.Word8 -> ByteString -> ByteString
+isPrefixOf :: ByteString -> ByteString -> Bool
+isSuffixOf :: ByteString -> ByteString -> Bool
+Data.ByteString.Lazy.iterate ::
+  (GHC.Word.Word8 -> GHC.Word.Word8) -> GHC.Word.Word8 -> ByteString
+Data.ByteString.Lazy.last :: ByteString -> GHC.Word.Word8
+Data.ByteString.Lazy.length :: ByteString -> GHC.Int.Int64
+Data.ByteString.Lazy.map ::
+  (GHC.Word.Word8 -> GHC.Word.Word8) -> ByteString -> ByteString
+mapAccumL ::
+  (acc -> GHC.Word.Word8 -> (acc, GHC.Word.Word8))
+  -> acc -> ByteString -> (acc, ByteString)
+mapAccumR ::
+  (acc -> GHC.Word.Word8 -> (acc, GHC.Word.Word8))
+  -> acc -> ByteString -> (acc, ByteString)
+Data.ByteString.Lazy.maximum :: ByteString -> GHC.Word.Word8
+Data.ByteString.Lazy.minimum :: ByteString -> GHC.Word.Word8
+Data.ByteString.Lazy.notElem ::
+  GHC.Word.Word8 -> ByteString -> Bool
+Data.ByteString.Lazy.null :: ByteString -> Bool
+pack :: [GHC.Word.Word8] -> ByteString
+partition ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> (ByteString, ByteString)
+Data.ByteString.Lazy.putStr :: ByteString -> IO ()
+Data.ByteString.Lazy.putStrLn :: ByteString -> IO ()
+Data.ByteString.Lazy.readFile :: FilePath -> IO ByteString
+Data.ByteString.Lazy.repeat :: GHC.Word.Word8 -> ByteString
+Data.ByteString.Lazy.replicate ::
+  GHC.Int.Int64 -> GHC.Word.Word8 -> ByteString
+Data.ByteString.Lazy.reverse :: ByteString -> ByteString
+Data.ByteString.Lazy.scanl ::
+  (GHC.Word.Word8 -> GHC.Word.Word8 -> GHC.Word.Word8)
+  -> GHC.Word.Word8 -> ByteString -> ByteString
+singleton :: GHC.Word.Word8 -> ByteString
+snoc :: ByteString -> GHC.Word.Word8 -> ByteString
+Data.ByteString.Lazy.span ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> (ByteString, ByteString)
+split :: GHC.Word.Word8 -> ByteString -> [ByteString]
+Data.ByteString.Lazy.splitAt ::
+  GHC.Int.Int64 -> ByteString -> (ByteString, ByteString)
+splitWith :: (GHC.Word.Word8 -> Bool) -> ByteString -> [ByteString]
+stripPrefix :: ByteString -> ByteString -> Maybe ByteString
+stripSuffix :: ByteString -> ByteString -> Maybe ByteString
+Data.ByteString.Lazy.tail :: ByteString -> ByteString
+tails :: ByteString -> [ByteString]
+Data.ByteString.Lazy.take ::
+  GHC.Int.Int64 -> ByteString -> ByteString
+Data.ByteString.Lazy.takeWhile ::
+  (GHC.Word.Word8 -> Bool) -> ByteString -> ByteString
+toChunks :: ByteString -> [Data.ByteString.Internal.ByteString]
+toStrict :: ByteString -> Data.ByteString.Internal.ByteString
+transpose :: [ByteString] -> [ByteString]
+uncons :: ByteString -> Maybe (GHC.Word.Word8, ByteString)
+unfoldr :: (a -> Maybe (GHC.Word.Word8, a)) -> a -> ByteString
+unpack :: ByteString -> [GHC.Word.Word8]
+unsnoc :: ByteString -> Maybe (ByteString, GHC.Word.Word8)
+Data.ByteString.Lazy.unzip ::
+  [(GHC.Word.Word8, GHC.Word.Word8)] -> (ByteString, ByteString)
+Data.ByteString.Lazy.writeFile :: FilePath -> ByteString -> IO ()
+Data.ByteString.Lazy.zip ::
+  ByteString -> ByteString -> [(GHC.Word.Word8, GHC.Word.Word8)]
+Data.ByteString.Lazy.zipWith ::
+  (GHC.Word.Word8 -> GHC.Word.Word8 -> a)
+  -> ByteString -> ByteString -> [a]
+data ByteString
+  = Data.ByteString.Lazy.Internal.Empty
+  | Data.ByteString.Lazy.Internal.Chunk {-# UNPACK #-}Data.ByteString.Internal.ByteString
+                                        ByteString
+foldlChunks ::
+  (a -> Data.ByteString.Internal.ByteString -> a)
+  -> a -> ByteString -> a
+foldrChunks ::
+  (Data.ByteString.Internal.ByteString -> a -> a)
+  -> a -> ByteString -> a

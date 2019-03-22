@@ -1,0 +1,4 @@
+executable Arith3Broken
+  hs-source-dirs: .
+  main-is: Arith3Broken.hs
+  default-language: Haskell2010

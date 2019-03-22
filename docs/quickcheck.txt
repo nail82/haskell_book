@@ -1,0 +1,298 @@
+:brow Test.QuickCheck
+(.&&.) ::
+  (Testable prop1, Testable prop2) => prop1 -> prop2 -> Property
+(.&.) ::
+  (Testable prop1, Testable prop2) => prop1 -> prop2 -> Property
+(.||.) ::
+  (Testable prop1, Testable prop2) => prop1 -> prop2 -> Property
+(=/=) :: (Eq a, Show a) => a -> a -> Property
+(===) :: (Eq a, Show a) => a -> a -> Property
+(==>) :: Testable prop => Bool -> prop -> Property
+(><) :: (Gen a -> Gen a) -> (Gen a -> Gen a) -> Gen a -> Gen a
+newtype ASCIIString = ASCIIString {getASCIIString :: String}
+class Arbitrary a where
+  arbitrary :: Gen a
+  shrink :: a -> [a]
+  {-# MINIMAL arbitrary #-}
+class Arbitrary1 (f :: * -> *) where
+  liftArbitrary :: Gen a -> Gen (f a)
+  liftShrink :: (a -> [a]) -> f a -> [f a]
+  {-# MINIMAL liftArbitrary #-}
+class Arbitrary2 (f :: * -> * -> *) where
+  liftArbitrary2 :: Gen a -> Gen b -> Gen (f a b)
+  liftShrink2 :: (a -> [a]) -> (b -> [b]) -> f a b -> [f a b]
+  {-# MINIMAL liftArbitrary2 #-}
+data Args
+  = Args {replay :: Maybe (Test.QuickCheck.Random.QCGen, Int),
+          maxSuccess :: Int,
+          maxDiscardRatio :: Int,
+          maxSize :: Int,
+          chatty :: Bool,
+          maxShrinks :: Int}
+newtype Blind a = Blind {getBlind :: a}
+class CoArbitrary a where
+  coarbitrary :: a -> Gen b -> Gen b
+  default coarbitrary :: (GHC.Generics.Generic a,
+                          Test.QuickCheck.Arbitrary.GCoArbitrary (GHC.Generics.Rep a)) =>
+                         a -> Gen b -> Gen b
+data Confidence
+  = Confidence {certainty :: Integer, tolerance :: Double}
+data Discard = Discard
+newtype Fixed a = Fixed {getFixed :: a}
+pattern Fn :: (a -> b) -> Fun a b
+pattern Fn2 :: (a -> b -> c) -> Fun (a, b) c
+pattern Fn3 :: (a -> b -> c -> d) -> Fun (a, b, c) d
+type role Fun nominal representational
+data Fun a b
+  = Fun (a Test.QuickCheck.Function.:-> b, b,
+         Test.QuickCheck.Function.Shrunk)
+        (a -> b)
+class Function a where
+  function :: (a -> b) -> a Test.QuickCheck.Function.:-> b
+  default function :: (GHC.Generics.Generic a,
+                       Test.QuickCheck.Function.GFunction (GHC.Generics.Rep a)) =>
+                      (a -> b) -> a Test.QuickCheck.Function.:-> b
+newtype Gen a
+  = Test.QuickCheck.Gen.MkGen {Test.QuickCheck.Gen.unGen :: Test.QuickCheck.Random.QCGen
+                                                            -> Int -> a}
+data InfiniteList a
+  = InfiniteList {getInfiniteList :: [a],
+                  infiniteListInternalData :: Test.QuickCheck.Modifiers.InfiniteListInternalData
+                                                a}
+newtype Large a = Large {getLarge :: a}
+newtype NonEmptyList a = NonEmpty {getNonEmpty :: [a]}
+newtype NonNegative a = NonNegative {getNonNegative :: a}
+newtype NonZero a = NonZero {getNonZero :: a}
+newtype OrderedList a = Ordered {getOrdered :: [a]}
+newtype Positive a = Positive {getPositive :: a}
+newtype PrintableString
+  = PrintableString {getPrintableString :: String}
+newtype Property
+  = Test.QuickCheck.Property.MkProperty {Test.QuickCheck.Property.unProperty :: Gen
+                                                                                  Test.QuickCheck.Property.Prop}
+data Result
+  = Success {numTests :: Int,
+             numDiscarded :: Int,
+             labels :: !(containers-0.6.0.1:Data.Map.Internal.Map [String] Int),
+             classes :: !(containers-0.6.0.1:Data.Map.Internal.Map String Int),
+             tables :: !(containers-0.6.0.1:Data.Map.Internal.Map
+                           String (containers-0.6.0.1:Data.Map.Internal.Map String Int)),
+             output :: String}
+  | GaveUp {numTests :: Int,
+            numDiscarded :: Int,
+            labels :: !(containers-0.6.0.1:Data.Map.Internal.Map [String] Int),
+            classes :: !(containers-0.6.0.1:Data.Map.Internal.Map String Int),
+            tables :: !(containers-0.6.0.1:Data.Map.Internal.Map
+                          String (containers-0.6.0.1:Data.Map.Internal.Map String Int)),
+            output :: String}
+  | Failure {numTests :: Int,
+             numDiscarded :: Int,
+             numShrinks :: Int,
+             numShrinkTries :: Int,
+             numShrinkFinal :: Int,
+             usedSeed :: Test.QuickCheck.Random.QCGen,
+             usedSize :: Int,
+             reason :: String,
+             theException :: Maybe Test.QuickCheck.Exception.AnException,
+             output :: String,
+             failingTestCase :: [String],
+             failingLabels :: [String],
+             failingClasses :: containers-0.6.0.1:Data.Set.Internal.Set String}
+  | NoExpectedFailure {numTests :: Int,
+                       numDiscarded :: Int,
+                       labels :: !(containers-0.6.0.1:Data.Map.Internal.Map [String] Int),
+                       classes :: !(containers-0.6.0.1:Data.Map.Internal.Map String Int),
+                       tables :: !(containers-0.6.0.1:Data.Map.Internal.Map
+                                     String (containers-0.6.0.1:Data.Map.Internal.Map String Int)),
+                       output :: String}
+newtype Shrink2 a = Shrink2 {getShrink2 :: a}
+class ShrinkState s a where
+  shrinkInit :: a -> s
+  shrinkState :: a -> s -> [(a, s)]
+  {-# MINIMAL shrinkInit, shrinkState #-}
+data Shrinking s a = Shrinking s a
+newtype Small a = Small {getSmall :: a}
+data Smart a = Smart Int a
+newtype SortedList a = Sorted {getSorted :: [a]}
+class Testable prop where
+  property :: prop -> Property
+  {-# MINIMAL property #-}
+newtype UnicodeString = UnicodeString {getUnicodeString :: String}
+again :: Testable prop => prop -> Property
+allProperties ::
+  template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Q
+    template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Exp
+applyArbitrary2 ::
+  (Arbitrary a, Arbitrary b) => (a -> b -> r) -> Gen r
+applyArbitrary3 ::
+  (Arbitrary a, Arbitrary b, Arbitrary c) =>
+  (a -> b -> c -> r) -> Gen r
+applyArbitrary4 ::
+  (Arbitrary a, Arbitrary b, Arbitrary c, Arbitrary d) =>
+  (a -> b -> c -> d -> r) -> Gen r
+applyFun :: Fun a b -> a -> b
+applyFun2 :: Fun (a, b) c -> a -> b -> c
+applyFun3 :: Fun (a, b, c) d -> a -> b -> c -> d
+arbitrary1 :: (Arbitrary1 f, Arbitrary a) => Gen (f a)
+arbitrary2 ::
+  (Arbitrary2 f, Arbitrary a, Arbitrary b) => Gen (f a b)
+arbitraryASCIIChar :: Gen Char
+arbitraryBoundedEnum :: (Bounded a, Enum a) => Gen a
+arbitraryBoundedIntegral :: (Bounded a, Integral a) => Gen a
+arbitraryBoundedRandom ::
+  (Bounded a, random-1.1:System.Random.Random a) => Gen a
+arbitraryPrintableChar :: Gen Char
+arbitrarySizedBoundedIntegral :: (Bounded a, Integral a) => Gen a
+arbitrarySizedFractional :: Fractional a => Gen a
+arbitrarySizedIntegral :: Integral a => Gen a
+arbitrarySizedNatural :: Integral a => Gen a
+arbitraryUnicodeChar :: Gen Char
+checkCoverage :: Testable prop => prop -> Property
+checkCoverageWith ::
+  Testable prop => Confidence -> prop -> Property
+choose :: random-1.1:System.Random.Random a => (a, a) -> Gen a
+classify :: Testable prop => Bool -> String -> prop -> Property
+coarbitraryEnum :: Enum a => a -> Gen b -> Gen b
+coarbitraryIntegral :: Integral a => a -> Gen b -> Gen b
+coarbitraryReal :: Real a => a -> Gen b -> Gen b
+coarbitraryShow :: Show a => a -> Gen b -> Gen b
+collect :: (Show a, Testable prop) => a -> prop -> Property
+conjoin :: Testable prop => [prop] -> Property
+counterexample :: Testable prop => String -> prop -> Property
+cover ::
+  Testable prop => Double -> Bool -> String -> prop -> Property
+coverTable ::
+  Testable prop => String -> [(String, Double)] -> prop -> Property
+discard :: a
+disjoin :: Testable prop => [prop] -> Property
+elements :: [a] -> Gen a
+expectFailure :: Testable prop => prop -> Property
+forAll ::
+  (Show a, Testable prop) => Gen a -> (a -> prop) -> Property
+forAllBlind :: Testable prop => Gen a -> (a -> prop) -> Property
+forAllProperties ::
+  template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Q
+    template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Exp
+forAllShow ::
+  Testable prop => Gen a -> (a -> String) -> (a -> prop) -> Property
+forAllShrink ::
+  (Show a, Testable prop) =>
+  Gen a -> (a -> [a]) -> (a -> prop) -> Property
+forAllShrinkBlind ::
+  Testable prop => Gen a -> (a -> [a]) -> (a -> prop) -> Property
+forAllShrinkShow ::
+  Testable prop =>
+  Gen a -> (a -> [a]) -> (a -> String) -> (a -> prop) -> Property
+frequency :: [(Int, Gen a)] -> Gen a
+functionBoundedEnum ::
+  (Eq a, Bounded a, Enum a) =>
+  (a -> b) -> a Test.QuickCheck.Function.:-> b
+functionIntegral ::
+  Integral a => (a -> b) -> a Test.QuickCheck.Function.:-> b
+functionMap ::
+  Function b =>
+  (a -> b)
+  -> (b -> a) -> (a -> c) -> a Test.QuickCheck.Function.:-> c
+functionRealFrac ::
+  RealFrac a => (a -> b) -> a Test.QuickCheck.Function.:-> b
+functionShow ::
+  (Show a, Read a) => (a -> c) -> a Test.QuickCheck.Function.:-> c
+generate :: Gen a -> IO a
+genericCoarbitrary ::
+  (GHC.Generics.Generic a,
+   Test.QuickCheck.Arbitrary.GCoArbitrary (GHC.Generics.Rep a)) =>
+  a -> Gen b -> Gen b
+genericShrink ::
+  (GHC.Generics.Generic a,
+   Test.QuickCheck.Arbitrary.RecursivelyShrink (GHC.Generics.Rep a),
+   Test.QuickCheck.Arbitrary.GSubterms (GHC.Generics.Rep a) a) =>
+  a -> [a]
+getSize :: Gen Int
+growingElements :: [a] -> Gen a
+idempotentIOProperty :: Testable prop => IO prop -> Property
+infiniteList :: Arbitrary a => Gen [a]
+infiniteListOf :: Gen a -> Gen [a]
+ioProperty :: Testable prop => IO prop -> Property
+isSuccess :: Result -> Bool
+label :: Testable prop => String -> prop -> Property
+labelledExamples :: Testable prop => prop -> IO ()
+labelledExamplesResult :: Testable prop => prop -> IO Result
+labelledExamplesWith :: Testable prop => Args -> prop -> IO ()
+labelledExamplesWithResult ::
+  Testable prop => Args -> prop -> IO Result
+listOf :: Gen a -> Gen [a]
+listOf1 :: Gen a -> Gen [a]
+mapSize :: Testable prop => (Int -> Int) -> prop -> Property
+monomorphic ::
+  template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Name
+  -> template-haskell-2.14.0.0:Language.Haskell.TH.Lib.Internal.ExpQ
+noShrinking :: Testable prop => prop -> Property
+once :: Testable prop => prop -> Property
+oneof :: [Gen a] -> Gen a
+orderedList :: (Ord a, Arbitrary a) => Gen [a]
+polyQuickCheck ::
+  template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Name
+  -> template-haskell-2.14.0.0:Language.Haskell.TH.Lib.Internal.ExpQ
+polyVerboseCheck ::
+  template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Name
+  -> template-haskell-2.14.0.0:Language.Haskell.TH.Lib.Internal.ExpQ
+printTestCase :: Testable prop => String -> prop -> Property
+quickCheck :: Testable prop => prop -> IO ()
+quickCheckAll ::
+  template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Q
+    template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Exp
+quickCheckResult :: Testable prop => prop -> IO Result
+quickCheckWith :: Testable prop => Args -> prop -> IO ()
+quickCheckWithResult :: Testable prop => Args -> prop -> IO Result
+recursivelyShrink ::
+  (GHC.Generics.Generic a,
+   Test.QuickCheck.Arbitrary.RecursivelyShrink
+     (GHC.Generics.Rep a)) =>
+  a -> [a]
+resize :: Int -> Gen a -> Gen a
+sample :: Show a => Gen a -> IO ()
+sample' :: Gen a -> IO [a]
+scale :: (Int -> Int) -> Gen a -> Gen a
+shrink1 :: (Arbitrary1 f, Arbitrary a) => f a -> [f a]
+shrink2 ::
+  (Arbitrary2 f, Arbitrary a, Arbitrary b) => f a b -> [f a b]
+shrinkDecimal :: RealFrac a => a -> [a]
+shrinkIntegral :: Integral a => a -> [a]
+shrinkList :: (a -> [a]) -> [a] -> [[a]]
+shrinkMap :: Arbitrary a => (a -> b) -> (b -> a) -> b -> [b]
+shrinkMapBy :: (a -> b) -> (b -> a) -> (a -> [a]) -> b -> [b]
+shrinkNothing :: a -> [a]
+shrinkRealFrac :: RealFrac a => a -> [a]
+shrinking ::
+  Testable prop => (a -> [a]) -> a -> (a -> prop) -> Property
+shuffle :: [a] -> Gen [a]
+sized :: (Int -> Gen a) -> Gen a
+stdArgs :: Args
+stdConfidence :: Confidence
+sublistOf :: [a] -> Gen [a]
+subterms ::
+  (GHC.Generics.Generic a,
+   Test.QuickCheck.Arbitrary.GSubterms (GHC.Generics.Rep a) a) =>
+  a -> [a]
+suchThat :: Gen a -> (a -> Bool) -> Gen a
+suchThatMap :: Gen a -> (a -> Maybe b) -> Gen b
+suchThatMaybe :: Gen a -> (a -> Bool) -> Gen (Maybe a)
+tabulate :: Testable prop => String -> [String] -> prop -> Property
+total :: deepseq-1.4.4.0:Control.DeepSeq.NFData a => a -> Property
+variant :: Integral n => n -> Gen a -> Gen a
+vector :: Arbitrary a => Int -> Gen [a]
+vectorOf :: Int -> Gen a -> Gen [a]
+verbose :: Testable prop => prop -> Property
+verboseCheck :: Testable prop => prop -> IO ()
+verboseCheckAll ::
+  template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Q
+    template-haskell-2.14.0.0:Language.Haskell.TH.Syntax.Exp
+verboseCheckResult :: Testable prop => prop -> IO Result
+verboseCheckWith :: Testable prop => Args -> prop -> IO ()
+verboseCheckWithResult ::
+  Testable prop => Args -> prop -> IO Result
+verboseShrinking :: Testable prop => prop -> Property
+whenFail :: Testable prop => IO () -> prop -> Property
+whenFail' :: Testable prop => IO () -> prop -> Property
+withMaxSuccess :: Testable prop => Int -> prop -> Property
+within :: Testable prop => Int -> prop -> Property
