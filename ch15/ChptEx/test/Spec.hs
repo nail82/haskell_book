@@ -37,6 +37,21 @@ type ThreeAssoc =
     -> (Three String String String)
     -> Bool
 
+type FourAssoc =
+    (Four String String String String)
+    -> (Four String String String String)
+    -> (Four String String String String)
+    -> Bool
+
+type BoolConjAssoc =
+    BoolConj -> BoolConj -> BoolConj -> Bool
+
+type BoolDisjAssoc =
+    BoolDisj -> BoolDisj -> BoolDisj -> Bool
+
+type OrAssoc =
+    (Or Int String) -> (Or Int String) -> (Or Int String) -> Bool
+
 
 main :: IO ()
 main = do
@@ -44,3 +59,7 @@ main = do
   quickCheck(semiGroupAssoc :: IdentityAssoc)
   quickCheck(semiGroupAssoc :: TwoAssoc)
   quickCheck(semiGroupAssoc :: ThreeAssoc)
+  quickCheck(semiGroupAssoc :: FourAssoc)
+  quickCheck(semiGroupAssoc :: BoolConjAssoc)
+  quickCheck(semiGroupAssoc :: BoolDisjAssoc)
+  quickCheck(semiGroupAssoc :: OrAssoc)

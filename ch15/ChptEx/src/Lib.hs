@@ -15,9 +15,13 @@ data Three a b c = Three a b c deriving (Eq, Show)
 
 data Four a b c d = Four a b c d deriving (Eq, Show)
 
-newtype BoolConj =
-    BoolConj Bool
+newtype BoolConj = BoolConj Bool deriving (Eq, Show)
 
+newtype BoolDisj = BoolDisj Bool deriving (Eq, Show)
+
+data Or a b =
+    Fst a
+  | Snd b deriving (Eq, Show)
 
 
 -- | Instances
@@ -70,6 +74,44 @@ instance ( Semigroup a
         (<>) (Four a b c d) (Four a' b' c' d') =
             Four (a <> a') (b <> b') (c <> c') (d <> d')
 
+instance ( Arbitrary a
+         , Arbitrary b
+         , Arbitrary c
+         , Arbitrary d
+         , Semigroup a
+         , Semigroup b
+         , Semigroup c
+         , Semigroup d)
+    => Arbitrary (Four a b c d) where
+        arbitrary = fourGen
+
+instance Semigroup BoolConj where
+    (<>) (BoolConj False) _ = (BoolConj False)
+    (<>) _ (BoolConj False) = (BoolConj False)
+    (<>) _ _                = (BoolConj True)
+
+instance Arbitrary BoolConj where
+    arbitrary = oneof [return (BoolConj True), return (BoolConj False)]
+
+instance Semigroup BoolDisj where
+    (<>) (BoolDisj True) _ = (BoolDisj True)
+    (<>) _ (BoolDisj True) = (BoolDisj True)
+    (<>) _ _               = (BoolDisj False)
+
+instance Arbitrary BoolDisj where
+    arbitrary = oneof [return (BoolDisj True), return (BoolDisj False)]
+
+instance Semigroup (Or a b) where
+    (<>) (Snd a) _       = (Snd a)
+    (<>) (Fst _) (Snd b) = (Snd b)
+    (<>) (Fst _) (Fst b) = (Fst b)
+
+instance ( Arbitrary a
+         , Arbitrary b) => Arbitrary (Or a b) where
+    arbitrary = orGen
+
+
+
 -- | Generators
 
 trivialGen :: Gen Trivial
@@ -93,3 +135,20 @@ threeGen = do
   b <- arbitrary
   c <- arbitrary
   return (Three a b c)
+
+fourGen :: (Arbitrary a, Arbitrary b, Arbitrary c, Arbitrary d) => Gen (Four a b c d)
+fourGen = do
+  a <- arbitrary
+  b <- arbitrary
+  c <- arbitrary
+  d <- arbitrary
+  return (Four a b c d)
+
+orGen :: (Arbitrary a, Arbitrary b) => Gen (Or a b)
+orGen = do
+  a <- arbitrary
+  b <- arbitrary
+  oneof [return (Fst a), return (Snd b)]
+
+orGenIntString :: Gen (Or Int String)
+orGenIntString = orGen
