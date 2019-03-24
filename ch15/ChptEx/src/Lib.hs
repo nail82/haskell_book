@@ -23,6 +23,9 @@ data Or a b =
     Fst a
   | Snd b deriving (Eq, Show)
 
+newtype Combine a b =
+    Combine { unCombine :: (a -> b) }
+
 
 -- | Instances
 
@@ -109,6 +112,10 @@ instance Semigroup (Or a b) where
 instance ( Arbitrary a
          , Arbitrary b) => Arbitrary (Or a b) where
     arbitrary = orGen
+
+instance ( Semigroup b )
+    => Semigroup (Combine a b) where
+        (<>) (Combine f) (Combine g) = Combine ( f <> g )
 
 
 
