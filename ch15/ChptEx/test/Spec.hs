@@ -76,4 +76,7 @@ main = do
   quickCheck(semiGroupAssoc :: OrAssoc)
   quickCheck(semiGroupAssoc :: ValidationAssoc)
   -- Monoids
-  quickCheck(monoidLeftIdentity :: Trivial -> Bool)
+  quickCheck(monoidLeftIdentity  :: Trivial -> Bool)
+  quickCheck(monoidRightIdentity :: Trivial -> Bool)
+  quickCheck(monoidLeftIdentity  :: Identity String -> Bool)
+  quickCheck(monoidRightIdentity :: Identity String -> Bool)

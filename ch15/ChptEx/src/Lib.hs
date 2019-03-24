@@ -49,6 +49,10 @@ instance Arbitrary Trivial where
 instance Semigroup a => Semigroup (Identity a) where
     (<>) (Identity a) (Identity b) = Identity (a <> b)
 
+instance Monoid a => Monoid (Identity a) where
+    mempty = Identity mempty
+    mappend = (<>)
+
 instance Arbitrary a => Arbitrary (Identity a) where
     arbitrary = identityGen
 
