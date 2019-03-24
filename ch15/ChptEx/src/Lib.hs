@@ -80,6 +80,8 @@ instance ( Semigroup a
         (<>) (Three a b c) (Three a' b' c') =
             Three (a <> a') (b <> b') (c <> c')
 
+-- monoid instance similar to Two
+
 instance ( Arbitrary a
          , Arbitrary b
          , Arbitrary c
@@ -97,6 +99,8 @@ instance ( Semigroup a
         (<>) (Four a b c d) (Four a' b' c' d') =
             Four (a <> a') (b <> b') (c <> c') (d <> d')
 
+-- monoid instance similar to Two
+
 instance ( Arbitrary a
          , Arbitrary b
          , Arbitrary c
@@ -113,6 +117,10 @@ instance Semigroup BoolConj where
     (<>) _ (BoolConj False) = (BoolConj False)
     (<>) _ _                = (BoolConj True)
 
+instance Monoid BoolConj where
+    mempty  = BoolConj True
+    mappend = (<>)
+
 instance Arbitrary BoolConj where
     arbitrary = oneof [return (BoolConj True), return (BoolConj False)]
 
@@ -120,6 +128,10 @@ instance Semigroup BoolDisj where
     (<>) (BoolDisj True) _ = (BoolDisj True)
     (<>) _ (BoolDisj True) = (BoolDisj True)
     (<>) _ _               = (BoolDisj False)
+
+instance Monoid BoolDisj where
+    mempty  = BoolDisj False
+    mappend = (<>)
 
 instance Arbitrary BoolDisj where
     arbitrary = oneof [return (BoolDisj True), return (BoolDisj False)]

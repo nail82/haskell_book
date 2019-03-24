@@ -83,3 +83,5 @@ main = do
   quickCheck(monoidRightIdentity :: Identity String -> Bool)
   quickCheck(monoidLeftIdentity  :: Two String (Sum Int) -> Bool)
   quickCheck(monoidRightIdentity :: Two String (Sum Int) -> Bool)
+  quickCheck(monoidLeftIdentity  :: BoolConj -> Bool)
+  quickCheck(monoidRightIdentity :: BoolConj -> Bool)
