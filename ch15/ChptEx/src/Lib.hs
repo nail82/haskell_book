@@ -180,6 +180,7 @@ orGen = do
   b <- arbitrary
   oneof [return (Fst a), return (Snd b)]
 
+-- For repl testing
 orGenIntString :: Gen (Or Int String)
 orGenIntString = orGen
 
@@ -189,5 +190,6 @@ validationGen = do
   b <- arbitrary
   oneof [return (Failure a), return (Success b)]
 
+-- For repl testing
 validationStringInt :: Gen (Validation String Int)
 validationStringInt = validationGen
