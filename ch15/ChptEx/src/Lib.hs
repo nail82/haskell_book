@@ -149,11 +149,19 @@ instance ( Semigroup b )
     => Semigroup (Combine a b) where
         (<>) (Combine f) (Combine g) = Combine ( f <> g )
 
+instance (Semigroup b, Monoid b) => Monoid (Combine a b) where
+    mempty  = Combine $ \_ -> mempty
+    mappend = (<>)
+
 -- instance (Semigroup b) => Arbitrary (Combine a b) where
 --     arbitrary = _
 
 instance Semigroup (Comp a) where
     (<>) (Comp f) (Comp g) = Comp (f . g)
+
+instance Monoid (Comp a) where
+    mempty  = (Comp id)
+    mappend = (<>)
 
 instance (Semigroup a)
     => Semigroup (Validation a b) where
