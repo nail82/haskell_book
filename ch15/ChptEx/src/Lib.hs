@@ -39,6 +39,10 @@ data Validation a b =
 instance Semigroup Trivial where
     (<>) _ _ = Trivial
 
+instance Monoid Trivial where
+    mempty = Trivial
+    mappend = (<>)
+
 instance Arbitrary Trivial where
     arbitrary = return Trivial
 

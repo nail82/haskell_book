@@ -8,6 +8,13 @@ semiGroupAssoc :: (Eq m, Semigroup m) =>
 semiGroupAssoc a b c =
     ((a <> b) <> c) == (a <> (b <> c))
 
+monoidLeftIdentity :: (Eq m, Monoid m) => m -> Bool
+monoidLeftIdentity a = mempty <> a == a
+
+monoidRightIdentity :: (Eq m, Monoid m) => m -> Bool
+monoidRightIdentity a = a <> mempty == a
+
+
 
 -- | Trivial
 
@@ -58,6 +65,7 @@ type ValidationAssoc =
 
 main :: IO ()
 main = do
+  -- Semigroups
   quickCheck(semiGroupAssoc :: TrivialAssoc)
   quickCheck(semiGroupAssoc :: IdentityAssoc)
   quickCheck(semiGroupAssoc :: TwoAssoc)
@@ -67,3 +75,5 @@ main = do
   quickCheck(semiGroupAssoc :: BoolDisjAssoc)
   quickCheck(semiGroupAssoc :: OrAssoc)
   quickCheck(semiGroupAssoc :: ValidationAssoc)
+  -- Monoids
+  quickCheck(monoidLeftIdentity :: Trivial -> Bool)
