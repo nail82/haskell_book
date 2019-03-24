@@ -1,7 +1,7 @@
 module Lib where
 
 import Data.Monoid
-import Test.QuickCheck
+import Test.QuickCheck hiding (Failure, Success)
 
 -- | Data Types
 
@@ -25,6 +25,13 @@ data Or a b =
 
 newtype Combine a b =
     Combine { unCombine :: (a -> b) }
+
+newtype Comp a =
+    Comp { unComp :: (a -> a) }
+
+data Validation a b =
+    Failure a | Success b
+    deriving (Eq, Show)
 
 
 -- | Instances
@@ -117,6 +124,22 @@ instance ( Semigroup b )
     => Semigroup (Combine a b) where
         (<>) (Combine f) (Combine g) = Combine ( f <> g )
 
+-- instance (Semigroup b) => Arbitrary (Combine a b) where
+--     arbitrary = _
+
+instance Semigroup (Comp a) where
+    (<>) (Comp f) (Comp g) = Comp (f . g)
+
+instance (Semigroup a)
+    => Semigroup (Validation a b) where
+        (<>) (Failure a) (Failure a') = Failure (a <> a')
+        (<>) (Success b) _            = Success b
+        (<>) _ (Success b)            = Success b
+
+instance (Arbitrary a, Arbitrary b, Semigroup a)
+    => Arbitrary (Validation a b) where
+        arbitrary = validationGen
+
 
 
 -- | Generators
@@ -159,3 +182,12 @@ orGen = do
 
 orGenIntString :: Gen (Or Int String)
 orGenIntString = orGen
+
+validationGen :: (Arbitrary a, Arbitrary b, Semigroup a) => Gen (Validation a b)
+validationGen = do
+  a <- arbitrary
+  b <- arbitrary
+  oneof [return (Failure a), return (Success b)]
+
+validationStringInt :: Gen (Validation String Int)
+validationStringInt = validationGen

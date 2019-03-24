@@ -52,6 +52,9 @@ type BoolDisjAssoc =
 type OrAssoc =
     (Or Int String) -> (Or Int String) -> (Or Int String) -> Bool
 
+type ValidationAssoc =
+    (Validation String Int) -> (Validation String Int) -> (Validation String Int) -> Bool
+
 
 main :: IO ()
 main = do
@@ -63,3 +66,4 @@ main = do
   quickCheck(semiGroupAssoc :: BoolConjAssoc)
   quickCheck(semiGroupAssoc :: BoolDisjAssoc)
   quickCheck(semiGroupAssoc :: OrAssoc)
+  quickCheck(semiGroupAssoc :: ValidationAssoc)
