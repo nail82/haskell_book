@@ -2,6 +2,7 @@ module Main where
 
 import Test.QuickCheck
 import Lib
+import Data.Monoid
 
 semiGroupAssoc :: (Eq m, Semigroup m) =>
                   m -> m -> m -> Bool
@@ -80,3 +81,5 @@ main = do
   quickCheck(monoidRightIdentity :: Trivial -> Bool)
   quickCheck(monoidLeftIdentity  :: Identity String -> Bool)
   quickCheck(monoidRightIdentity :: Identity String -> Bool)
+  quickCheck(monoidLeftIdentity  :: Two String (Sum Int) -> Bool)
+  quickCheck(monoidRightIdentity :: Two String (Sum Int) -> Bool)

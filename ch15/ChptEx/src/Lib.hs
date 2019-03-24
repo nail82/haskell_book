@@ -62,6 +62,11 @@ instance ( Semigroup a
         (<>) (Two a b) (Two a' b') =
             Two (a <> a') (b <> b')
 
+instance ( Monoid a
+         , Monoid b)
+    => Monoid (Two a b) where
+        mempty = Two mempty mempty
+
 instance ( Arbitrary a
          , Arbitrary b
          , Semigroup a
