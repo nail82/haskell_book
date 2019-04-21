@@ -1,0 +1,7 @@
+<2019-04-13 Sat>
+* Functors - mapping over structure, leaving the structure intact
+* fmapping a function over a function is the same as composition
+
+<2019-04-21 Sun>
+* Pausing the exercises in this chapter to move on to applicative and monad.
+* I think I have a pretty good understaning of functors.
