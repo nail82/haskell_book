@@ -33,6 +33,11 @@ data Validation a b =
     Failure a | Success b
     deriving (Eq, Show)
 
+newtype Mem s a =
+    Mem {
+      runMem :: s -> (a, s)
+    }
+
 
 -- | Instances
 
@@ -172,6 +177,18 @@ instance (Semigroup a)
 instance (Arbitrary a, Arbitrary b, Semigroup a)
     => Arbitrary (Validation a b) where
         arbitrary = validationGen
+
+instance Semigroup a => Semigroup (Mem s a) where
+    (<>) (Mem f) (Mem g) = _
+
+-- f :: s -> (a, s)
+-- g :: s -> (a, s)
+-- "Chain the s values from one function to the next"
+-- (a, s) = runMem f s
+
+instance Monoid a => Monoid (Mem s a) where
+    mempty  = Mem $ \s -> (mempty, s)
+    mappend = (<>)
 
 
 
