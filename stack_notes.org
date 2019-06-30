@@ -1,0 +1,3 @@
+<2019-04-13 Sat>
+* stack new some_dir # uses the default template
+* Template wiki: https://github.com/commercialhaskell/stack-templates/wiki
