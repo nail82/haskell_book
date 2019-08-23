@@ -1,6 +1,6 @@
-name:                InlineEx
+name:                ChptEx
 version:             0.1.0.0
-github:              "nail82/InlineEx"
+github:              "nail82/ChptEx"
 license:             BSD3
 author:              "Ted Satcher"
 maintainer:          "ted.satcher@gmail.com"
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/nail82/InlineEx#readme>
+description:         Please see the README on GitHub at <https://github.com/nail82/ChptEx#readme>
 
 dependencies:
 - base >= 4.7 && < 5
@@ -29,25 +29,28 @@ library:
   - QuickCheck
 
 executables:
-  InlineEx-exe:
+  ChptEx-exe:
     main:                Main.hs
-    source-dirs:         app
+    source-dirs:
+    - app
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - InlineEx
+    - ChptEx
 
 tests:
-  InlineEx-test:
+  ChptEx-test:
     main:                Spec.hs
-    source-dirs:         test
+    source-dirs:
+    - test
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Worphans
     dependencies:
-    - InlineEx
+    - ChptEx
     - checkers
     - QuickCheck
