@@ -38,7 +38,7 @@ toList = foldr (\v z -> v : z) []
 
 -- In terms of foldMap
 fold' :: (Foldable t, Monoid m) => t m -> m
-fold' = foldMap (\m -> m)
+fold' = foldMap id
 
 -- In terms of foldr
 foldMap' :: (Foldable t, Monoid m) => (a -> m) -> t a -> m
