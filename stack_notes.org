@@ -1,3 +1,13 @@
 <2019-04-13 Sat>
-* stack new some_dir # uses the default template
+* stack new some-proj
+** uses the default template
+** creates app, src and test subdirectories
+** probably best for most cases
+** Searches online for the most current lts
+** The created project won't compile unless the lts version is local
+* stack new some-proj simple
+** just creates a src subdirectory without most of the stack infrastructure
 * Template wiki: https://github.com/commercialhaskell/stack-templates/wiki
+* To use an lts version already downloaded
+** stack --resolver lts-14.0 new some-proj
+** where lts-14.0 is in .stack/build-plan
