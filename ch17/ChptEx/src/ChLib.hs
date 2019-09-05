@@ -2,6 +2,7 @@ module ChLib where
 
 import Test.QuickCheck
 import Test.QuickCheck.Checkers
+import Control.Applicative
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
@@ -236,5 +237,3 @@ fourPGen = do
   a'' <- arbitrary
   b   <- arbitrary
   return $ Four' a a' a'' b
-
--- 742 Combos
