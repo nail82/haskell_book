@@ -1,6 +1,18 @@
 module Main where
 
-import Lib
+import LearnParsers
 
 main :: IO ()
-main = someFunc
+main = do
+  pNL "stop:"
+  testParse stop
+  pNL "one:"
+  testParse one
+  pNL "oneTwo:"
+  testParse oneTwo
+  pNL "oneTwo':"
+  testParse oneTwo'
+  pNL "oneEof:"
+  testParse oneEof
+  pNL "oneTwoEof:"
+  testParse oneTwoEof
