@@ -47,7 +47,7 @@ main = do
   -- Ex 2
   print $ p base10Integer tenDigits
   -- Ex 4
-  print $ p parseDelimited dashDelimited
-  print $ p parseNoDelimited noDashes
-  print $ p parseBracketedAc oldWay
-  print $ p parseCountryCode countryCode
+  print $ p parsePhone dashDelimited
+  print $ p parsePhone noDashes
+  print $ p parsePhone oldWay
+  print $ p parsePhone countryCode

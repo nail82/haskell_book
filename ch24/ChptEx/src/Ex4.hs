@@ -23,9 +23,6 @@ data PhoneNumber = PhoneNumber NumberingPlanArea Exchange LineNumber
 dash :: Parser Char
 dash = char '-'
 
-skipWhitespace :: Parser ()
-skipWhitespace = skipMany (char ' ' <|> char '\n' <|> char '\t')
-
 parseNDigits :: Int -> Parser Int
 parseNDigits n = do
   xs <- count n digit
@@ -52,7 +49,7 @@ parseNoDelimited = PhoneNumber
 parseBracketedAc :: Parser PhoneNumber
 parseBracketedAc = PhoneNumber
                    <$> (char '(' *> parseThree <* char ')')
-                   <*> (skipWhitespace >> parseThree <* dash)
+                   <*> (someSpace >> parseThree <* dash)
                    <*> parseFour
 
 parseCountryCode :: Parser PhoneNumber
@@ -62,4 +59,7 @@ parseCountryCode = PhoneNumber
                    <*> parseFour
 
 parsePhone :: Parser PhoneNumber
-parsePhone = undefined
+parsePhone = (try parseBracketedAc <?> "Bracket")
+             <|> (try parseCountryCode <?> "Country")
+             <|> (try parseDelimited <?> "Delimited")
+             <|> (try parseNoDelimited <?> "No Delimited")
