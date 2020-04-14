@@ -1,0 +1,40 @@
+name:                PolyParser
+version:             0.1.0.0
+github:              "nail82/PolyParser"
+license:             BSD3
+author:              "Ted Satcher"
+maintainer:          "ted.satcher@gmail.com"
+copyright:           "BSD3"
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/nail82/PolyParser#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- trifecta >= 2
+- raw-strings-qq
+- containers
+- text
+- bytestring
+- hspec
+- attoparsec
+
+library:
+  source-dirs: src
+
+executables:
+  PolyParser-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - PolyParser
