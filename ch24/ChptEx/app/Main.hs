@@ -33,9 +33,10 @@ oldWay = "(123) 456-7890"
 countryCode :: String
 countryCode = "1-123-456-7890"
 
+countrySpaceDelimited :: String
+countrySpaceDelimited = "1 123 456 7890"
 
 p f s = parseString f mempty s
-
 
 main :: IO ()
 main = do
@@ -51,3 +52,4 @@ main = do
   print $ p parsePhone noDashes
   print $ p parsePhone oldWay
   print $ p parsePhone countryCode
+  print $ p parsePhone countrySpaceDelimited

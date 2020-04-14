@@ -6,6 +6,7 @@ module Ex4 where
 1234567890
 (123) 456-7890
 1-123-456-7890
+1 123 456 7890
 -}
 import Ex2 (expandDigitList)
 
@@ -38,15 +39,18 @@ parseAreaCode :: Parser Int
 parseAreaCode = (try (parseThree <* dash))
                 <|> (try (char '(' *> parseThree <* char ')'))
                 <|> (try (char '1' >> dash >> parseThree <* dash))
+                <|> (try (char '1' >> someSpace >> parseThree))
                 <|> (try parseThree)
 
 parseExchange :: Parser Int
 parseExchange = (try (parseThree <* dash))
                 <|> (try (someSpace >> parseThree <* dash))
+                <|> (try (someSpace >> parseThree))
                 <|> (try parseThree)
 
 parseLineNumber :: Parser Int
-parseLineNumber = parseFour
+parseLineNumber = (try (someSpace >> parseFour))
+                  <|> (try parseFour)
 
 parsePhone :: Parser PhoneNumber
 parsePhone = PhoneNumber
