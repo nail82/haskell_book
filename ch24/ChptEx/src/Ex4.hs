@@ -38,32 +38,28 @@ parseFour :: Parser Int
 parseFour = parseNDigits 4
 
 parseDelimited :: Parser PhoneNumber
-parseDelimited = do
-  ac <- parseThree <* dash
-  ex <- parseThree <* dash
-  ln <- parseFour
-  return $ PhoneNumber ac ex ln
+parseDelimited = PhoneNumber
+                 <$> parseThree <* dash
+                 <*> parseThree <* dash
+                 <*> parseFour
 
 parseNoDelimited :: Parser PhoneNumber
-parseNoDelimited = do
-  ac <- parseThree
-  ex <- parseThree
-  ln <- parseFour
-  return $ PhoneNumber ac ex ln
+parseNoDelimited = PhoneNumber
+                   <$> parseThree
+                   <*> parseThree
+                   <*> parseFour
 
 parseBracketedAc :: Parser PhoneNumber
-parseBracketedAc = do
-  ac <- char '(' *> parseThree <* char ')'
-  ex <- skipWhitespace >> parseThree <* dash
-  ln <- parseFour
-  return $ PhoneNumber ac ex ln
+parseBracketedAc = PhoneNumber
+                   <$> (char '(' *> parseThree <* char ')')
+                   <*> (skipWhitespace >> parseThree <* dash)
+                   <*> parseFour
 
 parseCountryCode :: Parser PhoneNumber
-parseCountryCode = do
-  ac <- char '1' >> dash >> parseThree <* dash
-  ex <- parseThree <* dash
-  ln <- parseFour
-  return $ PhoneNumber ac ex ln
+parseCountryCode = PhoneNumber
+                   <$> (char '1' >> dash >> parseThree <* dash)
+                   <*> (parseThree <* dash)
+                   <*> parseFour
 
 parsePhone :: Parser PhoneNumber
 parsePhone = undefined

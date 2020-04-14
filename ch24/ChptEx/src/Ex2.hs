@@ -22,9 +22,11 @@ parseDigit = char '0'
 base10Integer :: Parser Integer
 base10Integer = do
   xs <- some parseDigit
-  let max_pwr = (length xs) - 1
-      tups = zip (reverse xs) [0..max_pwr]
-  return $ foldr pow10 0 tups
+  return $ expandDigitList xs
 
 pow10 :: (Char, Int) -> Integer -> Integer
 pow10 (c, i) z = fromIntegral (digitToInt c) * 10^i + z
+
+expandDigitList :: [Char] -> Integer
+expandDigitList xs = foldr pow10 0 $ zip (reverse xs) [0..maxp]
+                     where maxp = length xs - 1
