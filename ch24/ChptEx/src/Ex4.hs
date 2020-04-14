@@ -40,17 +40,17 @@ parseAreaCode = (try (parseThree <* dash))
                 <|> (try (char '(' *> parseThree <* char ')'))
                 <|> (try (char '1' >> dash >> parseThree <* dash))
                 <|> (try (char '1' >> someSpace >> parseThree))
-                <|> (try parseThree)
+                <|> parseThree
 
 parseExchange :: Parser Int
 parseExchange = (try (parseThree <* dash))
                 <|> (try (someSpace >> parseThree <* dash))
                 <|> (try (someSpace >> parseThree))
-                <|> (try parseThree)
+                <|> parseThree
 
 parseLineNumber :: Parser Int
 parseLineNumber = (try (someSpace >> parseFour))
-                  <|> (try parseFour)
+                  <|> parseFour
 
 parsePhone :: Parser PhoneNumber
 parsePhone = PhoneNumber
