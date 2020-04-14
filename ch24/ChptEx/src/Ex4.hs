@@ -3,11 +3,11 @@ module Ex4 where
 -- parse phone numbers
 {-
 123-456-7890
-123456789
+1234567890
 (123) 456-7890
 1-123-456-7890
 -}
-import Ex2
+import Ex2 (expandDigitList)
 
 import Control.Applicative
 import Text.Trifecta
@@ -34,32 +34,22 @@ parseThree = parseNDigits 3
 parseFour :: Parser Int
 parseFour = parseNDigits 4
 
-parseDelimited :: Parser PhoneNumber
-parseDelimited = PhoneNumber
-                 <$> parseThree <* dash
-                 <*> parseThree <* dash
-                 <*> parseFour
+parseAreaCode :: Parser Int
+parseAreaCode = (try (parseThree <* dash))
+                <|> (try (char '(' *> parseThree <* char ')'))
+                <|> (try (char '1' >> dash >> parseThree <* dash))
+                <|> (try parseThree)
 
-parseNoDelimited :: Parser PhoneNumber
-parseNoDelimited = PhoneNumber
-                   <$> parseThree
-                   <*> parseThree
-                   <*> parseFour
+parseExchange :: Parser Int
+parseExchange = (try (parseThree <* dash))
+                <|> (try (someSpace >> parseThree <* dash))
+                <|> (try parseThree)
 
-parseBracketedAc :: Parser PhoneNumber
-parseBracketedAc = PhoneNumber
-                   <$> (char '(' *> parseThree <* char ')')
-                   <*> (someSpace >> parseThree <* dash)
-                   <*> parseFour
-
-parseCountryCode :: Parser PhoneNumber
-parseCountryCode = PhoneNumber
-                   <$> (char '1' >> dash >> parseThree <* dash)
-                   <*> (parseThree <* dash)
-                   <*> parseFour
+parseLineNumber :: Parser Int
+parseLineNumber = parseFour
 
 parsePhone :: Parser PhoneNumber
-parsePhone = (try parseBracketedAc <?> "Bracket")
-             <|> (try parseCountryCode <?> "Country")
-             <|> (try parseDelimited <?> "Delimited")
-             <|> (try parseNoDelimited <?> "No Delimited")
+parsePhone = PhoneNumber
+             <$> parseAreaCode
+             <*> parseExchange
+             <*> parseLineNumber
