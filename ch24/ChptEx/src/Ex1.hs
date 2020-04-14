@@ -47,12 +47,22 @@ semVerParser = do
   mj <- integer <* dot
   mi <- integer <* dot
   pt <- integer
-  maybe_release <- optional releaseParser
-  maybe_build <- optional buildParser
-  let rel = case maybe_release of
+  maybe_rel <- optional releaseParser
+  maybe_bld <- optional buildParser
+  let rel = case maybe_rel of
               Just xs -> xs
               _ -> []
-  let bld = case maybe_build of
+  let bld = case maybe_bld of
               Just xs -> xs
               _ -> []
   return (SemVer mj mi pt rel bld)
+
+instance Ord SemVer where
+    (<=) (SemVer mjl mil ptl _ _) (SemVer mjr mir ptr _ _) =
+        case mjComp of
+          LT -> True
+          GT -> False
+          EQ -> (milFrac <= mirFrac)
+          where mjComp = compare mjl mjr
+                milFrac = ((fromIntegral mil) :: Float) + (fromIntegral ptl) * 0.1
+                mirFrac = ((fromIntegral mir) :: Float) + (fromIntegral ptr) * 0.1
