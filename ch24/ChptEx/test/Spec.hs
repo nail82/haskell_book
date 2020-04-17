@@ -7,46 +7,13 @@ import Text.RawString.QQ
 import Text.Trifecta
 import Test.Hspec
 import Ex5
+import Ex5Data
 
 maybeSuccess :: Result a -> Maybe a
 maybeSuccess (Success a) = Just a
 maybeSuccess _ = Nothing
 
-commentExample :: ByteString
-commentExample = [r|-- wheee a comment
-|]
-
-logExample :: ByteString
-logExample = "08:00 Breakfast"
-
-dateExample :: ByteString
-dateExample = "# 2025-02-07 -- dates not nececessarily sequential\n"
-
-twoLine :: ByteString
-twoLine = [r|
-08:00 Breakfast -- should I try skippin bfast?
-09:00 Bumped head, passed out
-|]
-
-twoWithDay :: ByteString
-twoWithDay = [r|# 2020-03-21
-08:00 Breakfast -- should I try skippin bfast?
-09:00 Bumped head, passed out
-|]
-
-weeTime :: ByteString
-weeTime = "08:00"
-
-lateTime :: ByteString
-lateTime = "23:01"
-
-eventWithComment :: ByteString
-eventWithComment = "bub, a dude -- comment"
-
-eventWOComment :: ByteString
-eventWOComment = "bub, a dude"
-
-pb f s = parseByteString f mempty s
+pb f s = parseString f mempty s
 
 main :: IO ()
 main = hspec $ do
@@ -88,17 +55,28 @@ main = hspec $ do
                   r' `shouldBe` Just (LogEntry 28800 "Breakfast")
          describe "Log Entries" $
                it "can parse multiple log entries" $ do
-                 let m = pb parseEntries twoLine
+                 let m = pb (some parseLogEntry) twoLine
                      r' = maybeSuccess m
                  print m
                  r' `shouldBe` Just ([LogEntry 28800 "Breakfast "
                                      , LogEntry 32400 "Bumped head, passed out"])
          describe "Log Day" $
                it "can parse a day's logs" $ do
-                 let m = pb parseLogDay twoWithDay
+                 let m = pb parseLogDay threeWithDay
                      r' = maybeSuccess m
                  print m
                  r' `shouldBe` Just (LogDay
                                      (fromGregorian 2020 3 21) [
-                                      LogEntry 28800 "Breakfast "
-                                     , LogEntry 32400 "Bumped head, passed out"])
+                                      LogEntry 28800 "Breakfast"
+                                     , LogEntry 32400 "Bumped head, passed out"
+                                     , LogEntry 36000 "workout"])
+         describe "Log Day with comment" $
+               it "can parse a day's logs with a comment" $ do
+                 let m = pb parseLogDay threeWithDayComment
+                     r' = maybeSuccess m
+                 print m
+                 r' `shouldBe` Just (LogDay
+                                     (fromGregorian 2020 3 21) [
+                                      LogEntry 28800 "Breakfast"
+                                     , LogEntry 32400 "Bumped head, passed out"
+                                     , LogEntry 36000 "workout "])

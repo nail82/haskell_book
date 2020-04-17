@@ -4,6 +4,8 @@
 module Ex5 where
 
 import Control.Applicative
+import Data.ByteString (ByteString)
+import Text.RawString.QQ
 import Text.Trifecta
 import Data.Char (digitToInt)
 import Data.Time
@@ -93,17 +95,14 @@ parseDayStamp = do
   yy <- integer <* char '-'
   mm <- integer <* char '-'
   dd <- integer
-  skipRestOfLine
+  try skipComments <|> skipEOL
   let day = fromGregorianValid yy (fromIntegral mm) (fromIntegral dd)
   case day of
     (Just d) -> return d
     _ -> fail "Invalid date"
 
 parseLogEntry :: Parser LogEntry
-parseLogEntry = LogEntry <$> parseTimeStamp <*> parseEvent
-
-parseEntries :: Parser [LogEntry]
-parseEntries = some parseLogEntry
+parseLogEntry = skipWhitespace >> LogEntry <$> parseTimeStamp <*> parseEvent
 
 parseLogDay :: Parser LogDay
-parseLogDay = LogDay <$> parseDayStamp <*> parseEntries
+parseLogDay = LogDay <$> parseDayStamp <*> (some parseLogEntry)
