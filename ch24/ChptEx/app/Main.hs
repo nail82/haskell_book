@@ -41,8 +41,7 @@ main = do
           exitFailure
         parseLogFile fnm = do
                      Prelude.putStrLn $ "Parsing " ++ fnm
-                     logData <- T.readFile fnm
-                     let res = parseByteString parseLog mempty logData
+                     res <- parseFromFileEx parseLog fnm
                      case res of
                        (Success logs) -> Prelude.putStrLn $ L.intercalate "\n" $ show <$> logs
                        (Failure perr) -> Prelude.putStrLn $ show perr
