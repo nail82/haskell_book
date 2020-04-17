@@ -1,11 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE QuasiQuotes #-}
 -- Log file parser
 module Ex5 where
 
 import Control.Applicative
-import Data.ByteString (ByteString)
-import Text.RawString.QQ
 import Text.Trifecta
 import Data.Char (digitToInt)
 import Data.Time
