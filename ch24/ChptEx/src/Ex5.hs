@@ -91,6 +91,7 @@ parseEvent = do
 
 parseDayStamp :: Parser Day
 parseDayStamp = do
+  skipWhitespace
   _ <- skipMany (oneOf "# ")
   yy <- integer <* char '-'
   mm <- integer <* char '-'

@@ -41,6 +41,14 @@ threeWithDayComment = [r|# 2020-03-21 -- a comment
 10:00 workout -- bfast comment
 |]
 
+dayWithLeadingWhitespace :: String
+dayWithLeadingWhitespace = [r|
+# 2020-03-21 -- a comment
+08:00 Breakfast
+09:00 Bumped head, passed out
+10:00 workout -- bfast comment
+|]
+
 weeTime :: String
 weeTime = "08:00"
 

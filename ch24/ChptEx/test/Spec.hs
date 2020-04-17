@@ -80,3 +80,13 @@ main = hspec $ do
                                       LogEntry 28800 "Breakfast"
                                      , LogEntry 32400 "Bumped head, passed out"
                                      , LogEntry 36000 "workout "])
+         describe "Log Day with leading whitespace" $
+               it "can parse a day's logs with leading whitespace" $ do
+                 let m = pb parseLogDay dayWithLeadingWhitespace
+                     r' = maybeSuccess m
+                 print m
+                 r' `shouldBe` Just (LogDay
+                                     (fromGregorian 2020 3 21) [
+                                      LogEntry 28800 "Breakfast"
+                                     , LogEntry 32400 "Bumped head, passed out"
+                                     , LogEntry 36000 "workout "])
