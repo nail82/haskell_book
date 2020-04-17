@@ -20,6 +20,8 @@ dependencies:
 - trifecta
 - raw-strings-qq
 - bytestring
+- time
+- charset
 
 library:
   source-dirs: src
@@ -45,3 +47,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - ChptEx
+    - hspec
