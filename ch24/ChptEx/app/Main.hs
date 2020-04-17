@@ -2,40 +2,18 @@
 {-# LANGUAGE QuasiQuotes #-}
 module Main where
 
+import Data.ByteString as T
+import System.Environment (getArgs)
+import System.Exit ( exitFailure
+                   , exitSuccess)
 import Text.Trifecta
+import qualified Data.List as L
+
 import Ex1
 import Ex2
 import Ex4
-
-justCore :: String
-justCore = "1.2.3"
-
-coreAndRelease :: String
-coreAndRelease = "1.2.3-abc.456"
-
-coreAndBuild :: String
-coreAndBuild = "1.2.3+build.456"
-
-coreReleaseBuild :: String
-coreReleaseBuild = "1.2.3-abc.456+build.789"
-
-dashDelimited :: String
-dashDelimited = "123-456-7890"
-
-tenDigits :: String
-tenDigits = "1234567890"
-
-noDashes :: String
-noDashes = "1234567890"
-
-oldWay :: String
-oldWay = "(123) 456-7890"
-
-countryCode :: String
-countryCode = "1-123-456-7890"
-
-countrySpaceDelimited :: String
-countrySpaceDelimited = "1 123 456 7890"
+import Ex5
+import Ex5Data
 
 p f s = parseString f mempty s
 
@@ -54,3 +32,18 @@ main = do
   print $ p parsePhone oldWay
   print $ p parsePhone countryCode
   print $ p parsePhone countrySpaceDelimited
+  args <- getArgs
+  case args of
+    [] -> argError
+    fnm:_ -> parseLogFile fnm
+  where argError = do
+          Prelude.putStrLn "Need a filename"
+          exitFailure
+        parseLogFile fnm = do
+                     Prelude.putStrLn $ "Parsing " ++ fnm
+                     logData <- T.readFile fnm
+                     let res = parseByteString parseLog mempty logData
+                     case res of
+                       (Success logs) -> Prelude.putStrLn $ L.intercalate "\n" $ show <$> logs
+                       (Failure perr) -> Prelude.putStrLn $ show perr
+                     exitSuccess

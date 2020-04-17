@@ -18,8 +18,9 @@ data LogEntry = LogEntry {
       logEvent :: Event
     } deriving (Eq)
 
-data LogDay = LogDay Day [LogEntry]
-            deriving (Eq)
+data LogDay = LogDay Day [LogEntry] deriving (Eq)
+
+type Log = [LogDay]
 
 hhMM :: FormatTime t => t -> String
 hhMM = formatTime defaultTimeLocale "%H:%M"
@@ -112,3 +113,6 @@ parseLogEntry = skipWhitespace >> LogEntry <$> parseTimeStamp <*> parseEvent
 
 parseLogDay :: Parser LogDay
 parseLogDay = LogDay <$> parseDayStamp <*> (some parseLogEntry)
+
+parseLog :: Parser Log
+parseLog = skipComments >> skipWhitespace >> some parseLogDay
