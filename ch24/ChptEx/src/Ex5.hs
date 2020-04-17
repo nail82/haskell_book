@@ -43,11 +43,8 @@ instance Show LogDay where
 printables :: Parser Char
 printables = oneOfSet $ C.fromList (['A'..'z'] ++ " 1234567890!@#$%^&*()+=,.?:;")
 
-skipEOL :: Parser ()
-skipEOL = skipMany (oneOf "\n")
-
 skipRestOfLine :: Parser ()
-skipRestOfLine = skipMany (noneOf "\n") >> skipEOL
+skipRestOfLine = skipMany (noneOf "\n") >> spaces
 
 skipComments :: Parser ()
 skipComments = do
@@ -89,7 +86,7 @@ parseEvent :: Parser Event
 parseEvent = do
   spaces
   ev <- some printables
-  try skipComments <|> skipEOL
+  try skipComments <|> spaces
   return $ dropWhileEnd (\c -> c == ' ') ev
 
 parseDayStamp :: Parser Day
@@ -99,7 +96,7 @@ parseDayStamp = do
   yy <- integer <* char '-'
   mm <- integer <* char '-'
   dd <- integer
-  try skipComments <|> skipEOL
+  try skipComments <|> spaces
   let day = fromGregorianValid yy (fromIntegral mm) (fromIntegral dd)
   case day of
     (Just d) -> return d
