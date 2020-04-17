@@ -5,8 +5,10 @@ module Ex5 where
 import Control.Applicative
 import Text.Trifecta
 import Data.Char (digitToInt)
-import Data.Time
 import Data.CharSet as C
+import Data.List (intercalate)
+import Data.Time
+
 
 -- --- Data ---
 type Event = String
@@ -17,7 +19,7 @@ data LogEntry = LogEntry {
     } deriving (Eq)
 
 data LogDay = LogDay Day [LogEntry]
-            deriving (Eq, Show)
+            deriving (Eq)
 
 hhMM :: FormatTime t => t -> String
 hhMM = formatTime defaultTimeLocale "%H:%M"
@@ -29,6 +31,12 @@ instance Show LogEntry where
     show entry = hhMM (UTCTime fakeDay (sinceMid entry))
                  ++ " "
                  ++ (logEvent entry)
+
+instance Show LogDay where
+    show (LogDay d xs) =
+        let fl = "# " ++ show d
+            events = fl : (show <$> xs)
+        in intercalate "\n" events
 
 -- --- Functions ---
 printables :: Parser Char
