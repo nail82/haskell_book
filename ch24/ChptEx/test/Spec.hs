@@ -17,6 +17,12 @@ pb f s = parseString f mempty s
 
 main :: IO ()
 main = hspec $ do
+         describe "Skip Comment" $
+               it "can skip comment lines" $ do
+                 let m = pb skipComments commentExample
+                     r' = maybeSuccess m
+                 print m
+                 r' `shouldBe` Just ()
          describe "Day header" $
                it "can parse a day header" $ do
                  let m = pb parseDayStamp dateExample
