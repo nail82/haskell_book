@@ -46,7 +46,7 @@ main = hspec $ do
                  let  m = pb parseEvent eventWithComment
                       r' = maybeSuccess m
                  print m
-                 r' `shouldBe` Just "bub, a dude "
+                 r' `shouldBe` Just "bub, a dude"
          describe "Event" $
                it "can parse an event without a comment" $ do
                  let  m = pb parseEvent eventWOComment
@@ -64,7 +64,7 @@ main = hspec $ do
                  let m = pb (some parseLogEntry) twoLine
                      r' = maybeSuccess m
                  print m
-                 r' `shouldBe` Just ([LogEntry 28800 "Breakfast "
+                 r' `shouldBe` Just ([LogEntry 28800 "Breakfast"
                                      , LogEntry 32400 "Bumped head, passed out"])
          describe "Log Day" $
                it "can parse a day's logs" $ do
@@ -85,7 +85,7 @@ main = hspec $ do
                                      (fromGregorian 2020 3 21) [
                                       LogEntry 28800 "Breakfast"
                                      , LogEntry 32400 "Bumped head, passed out"
-                                     , LogEntry 36000 "workout "])
+                                     , LogEntry 36000 "workout"])
          describe "Log Day with leading whitespace" $
                it "can parse a day's logs with leading whitespace" $ do
                  let m = pb parseLogDay dayWithLeadingWhitespace
@@ -95,4 +95,4 @@ main = hspec $ do
                                      (fromGregorian 2020 3 21) [
                                       LogEntry 28800 "Breakfast"
                                      , LogEntry 32400 "Bumped head, passed out"
-                                     , LogEntry 36000 "workout "])
+                                     , LogEntry 36000 "workout"])

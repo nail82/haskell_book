@@ -6,7 +6,7 @@ import Control.Applicative
 import Text.Trifecta
 import Data.Char (digitToInt)
 import Data.CharSet as C
-import Data.List (intercalate)
+import Data.List (intercalate, dropWhileEnd)
 import Data.Time
 
 
@@ -51,6 +51,7 @@ skipRestOfLine = skipMany (noneOf "\n") >> skipEOL
 
 skipComments :: Parser ()
 skipComments = do
+  skipWhitespace
   _ <- count 2 $ char '-'
   skipRestOfLine
 
@@ -87,13 +88,12 @@ parseTimeStamp = do
   m <- parseMinute
   return $ realToFrac (h * 3600 + m * 60)
 
--- This can leave some trailing whitespace
 parseEvent :: Parser Event
 parseEvent = do
   skipWhitespace
   ev <- some printables
   try skipComments <|> skipEOL
-  return ev
+  return $ dropWhileEnd (\c -> c == ' ') ev
 
 parseDayStamp :: Parser Day
 parseDayStamp = do
