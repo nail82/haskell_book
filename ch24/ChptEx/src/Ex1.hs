@@ -59,10 +59,4 @@ semVerParser = do
 
 instance Ord SemVer where
     (<=) (SemVer mjl mil ptl _ _) (SemVer mjr mir ptr _ _) =
-        case mjComp of
-          LT -> True
-          GT -> False
-          EQ -> (milFrac <= mirFrac)
-          where mjComp = compare mjl mjr
-                milFrac = ((fromIntegral mil) :: Float) + (fromIntegral ptl) * 0.1
-                mirFrac = ((fromIntegral mir) :: Float) + (fromIntegral ptr) * 0.1
+        (mjl, mil, ptl) <= (mjr, mir, ptr)
