@@ -51,12 +51,9 @@ skipRestOfLine = skipMany (noneOf "\n") >> skipEOL
 
 skipComments :: Parser ()
 skipComments = do
-  skipWhitespace
+  spaces
   _ <- count 2 $ char '-'
   skipRestOfLine
-
-skipWhitespace :: Parser ()
-skipWhitespace = skipMany (char ' ' <|> char '\t' <|> char '\n')
 
 parseWeeHour :: Parser Int
 parseWeeHour = do
@@ -90,14 +87,14 @@ parseTimeStamp = do
 
 parseEvent :: Parser Event
 parseEvent = do
-  skipWhitespace
+  spaces
   ev <- some printables
   try skipComments <|> skipEOL
   return $ dropWhileEnd (\c -> c == ' ') ev
 
 parseDayStamp :: Parser Day
 parseDayStamp = do
-  skipWhitespace
+  spaces
   _ <- skipMany (oneOf "# ")
   yy <- integer <* char '-'
   mm <- integer <* char '-'
@@ -109,10 +106,10 @@ parseDayStamp = do
     _ -> fail "Invalid date"
 
 parseLogEntry :: Parser LogEntry
-parseLogEntry = skipWhitespace >> LogEntry <$> parseTimeStamp <*> parseEvent
+parseLogEntry = spaces >> LogEntry <$> parseTimeStamp <*> parseEvent
 
 parseLogDay :: Parser LogDay
 parseLogDay = LogDay <$> parseDayStamp <*> (some parseLogEntry)
 
 parseLog :: Parser Log
-parseLog = skipComments >> skipWhitespace >> some parseLogDay
+parseLog = skipComments >> spaces >> some parseLogDay
