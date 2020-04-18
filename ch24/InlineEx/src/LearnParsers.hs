@@ -9,6 +9,12 @@ stop = unexpected "stop"
 one :: Parser Char
 one = char '1'
 
+oneEof :: (Monad m, CharParsing m) => m ()
+oneEof = char '1' >> eof
+
+oneTwoEof :: (Monad m, CharParsing m) => m ()
+oneTwoEof = char '1' >> char '2' >> eof
+
 two :: Parser Char
 two = char '2'
 
