@@ -96,7 +96,7 @@ parseDayStamp = do
   yy <- integer <* char '-'
   mm <- integer <* char '-'
   dd <- integer
-  try skipComments <|> spaces
+  try skipComments <|> spaces   -- The date is all that we care about
   let day = fromGregorianValid yy (fromIntegral mm) (fromIntegral dd)
   case day of
     (Just d) -> return d
