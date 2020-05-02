@@ -5,7 +5,6 @@ module Ex5 where
 import Control.Applicative
 import Text.Trifecta
 import Data.Char (digitToInt)
-import Data.CharSet as C
 import Data.List (intercalate, dropWhileEnd)
 import Data.Time
 
@@ -40,8 +39,11 @@ instance Show LogDay where
         in intercalate "\n" events
 
 -- --- Functions ---
+printableStr :: String
+printableStr = ['A'..'z'] <> " 1234567890!@#$%^&*()+=,.?:;"
+
 printables :: Parser Char
-printables = oneOfSet $ C.fromList (['A'..'z'] ++ " 1234567890!@#$%^&*()+=,.?:;")
+printables = oneOf printableStr
 
 skipRestOfLine :: Parser ()
 skipRestOfLine = skipMany (noneOf "\n") >> spaces

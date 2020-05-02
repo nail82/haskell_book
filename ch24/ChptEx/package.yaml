@@ -21,7 +21,6 @@ dependencies:
 - raw-strings-qq
 - bytestring
 - time
-- charset
 
 library:
   source-dirs: src
