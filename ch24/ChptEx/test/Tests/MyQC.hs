@@ -1,6 +1,7 @@
 module Tests.MyQC (runQC) where
 
 import Test.QuickCheck
+import qualified Text.Trifecta as TT
 
 import Ex5
 
@@ -29,6 +30,13 @@ showHour h
 hhmmGen :: Gen HHMM
 hhmmGen = oneof allTimes
 
+timeGtEqZero :: HHMM -> Bool
+timeGtEqZero hm = let (TT.Success dt) = TT.parseString parseTimeStamp mempty hm
+                  in dt >= 0
+
+prop_timeGtEqZero :: Property
+prop_timeGtEqZero = forAll hhmmGen (\t -> timeGtEqZero t)
+
+
 runQC :: IO ()
-runQC = do
-  putStrLn "=>QuickCheck tests not implemented.  Stay tuned.<="
+runQC = quickCheck prop_timeGtEqZero
